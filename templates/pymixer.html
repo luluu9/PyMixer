@@ -4,7 +4,7 @@
 </head>
 <body>
     {% for processName, volume in processVolumes.items() %}
-        <div class="process"> <img src={{ processIcons[processName] }}>{{ processName|e }}: {{ volume|e }}</div>
+        <div class="process"> <img src={{ url_for("static", filename=processIcons[processName]|e )}} style="height: 50px"> {{ processName|e }}: {{ volume|e }}</div>
     {% endfor %}
 </body>
 

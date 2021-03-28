@@ -7,7 +7,7 @@ import os
 class IconManager:
     cwd = pathlib.Path(__file__).parent.absolute()
     def __init__(self):
-        self.iconsDirPath = pathlib.Path(self.cwd / "icons/")
+        self.iconsDirPath = pathlib.Path(self.cwd / "static/")
         self.iconsAvailable = {}
         self.checkDir()
     
@@ -35,7 +35,7 @@ class IconManager:
             except NoIconsAvailableError:
                 print("No icon for", processName)
                 return None
-        return self.getIconPath(self.iconsAvailable[processName])
+        return self.iconsAvailable[processName]
 
 
     def getIconPath(self, iconName):
