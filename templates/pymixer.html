@@ -1,0 +1,10 @@
+<!doctype html>
+<head>
+    <title>PyMixer</title>
+</head>
+<body>
+    {% for processName, volume in processVolumes.items() %}
+        <div class="process"> <img src={{ processIcons[processName] }}>{{ processName|e }}: {{ volume|e }}</div>
+    {% endfor %}
+</body>
+

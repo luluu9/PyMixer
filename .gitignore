@@ -1,3 +1,4 @@
 env
 icons
 test.py
+__pycache__
