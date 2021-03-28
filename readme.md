@@ -1,0 +1,2 @@
+If you are using bluetooth speakers and you can't change volume, try this: https://www.dell.com/community/Inspiron/Can-t-control-volume-of-external-bluetooth-speakers-through/td-p/7496329
+"You can change the value of “DisableAbsoluteVolume” manually into 1. (Path: HKLM\SYSTEM\ControlSet001\Control\Bluetooth\Audio\AVRCP\CT)"
