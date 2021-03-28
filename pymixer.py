@@ -91,7 +91,6 @@ class AudioManager:
         session = self.getSession(pid)
         if session:
             interface = session.SimpleAudioVolume
-            print(pid, 'volume:', interface.GetMasterVolume())
             return interface.GetMasterVolume()
 
     def setVolume(self, pid, decibels):
@@ -101,7 +100,6 @@ class AudioManager:
             # only set volume in the range 0.0 to 1.0
             self.volume = min(1.0, max(0.0, decibels))
             interface.SetMasterVolume(self.volume, None)
-            print(pid, 'volume set to', self.volume)
 
 
 if __name__ == '__main__':
