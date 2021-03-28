@@ -55,10 +55,8 @@ class AudioManager:
 
     def getSession(self, pid):
         if not pid in self.allProcessess:
-            newAllProcesses = self.getAllProcesses()
-            if pid in newAllProcesses:
-                self.allProcessess = newAllProcesses
-            else:
+            self.allProcessess = self.getAllProcesses()
+            if not pid in self.allProcessess:
                 return None
         return self.allProcessess[pid]
     
@@ -67,7 +65,13 @@ class AudioManager:
         if session:
             process = session.Process
             if process:
-                return [process.name(), process.exe()]
+                return [process.name(), process.exe(), self.getVolume(pid)]
+
+    def getAllProcessInfo(self):
+        allProcessesInfo = []
+        for pid in self.allProcessess:
+            allProcessesInfo.append(self.getProcessInfo(pid))
+        return allProcessesInfo
 
     def mute(self, pid):
         session = self.getSession(pid)
@@ -98,14 +102,15 @@ class AudioManager:
             self.volume = min(1.0, max(0.0, decibels))
             interface.SetMasterVolume(self.volume, None)
             print(pid, 'volume set to', self.volume)
-    
-iconManager = IconManager()
-audioManager = AudioManager()
-allProcesses = audioManager.getAllProcesses()
-for pid in allProcesses:
-    print(audioManager.getVolume(pid))
-    audioManager.setVolume(pid, 0.5)
-    print(iconManager.getIcon(*audioManager.getProcessInfo(pid)))
+
+
+if __name__ == '__main__':
+    iconManager = IconManager()
+    audioManager = AudioManager()
+    allProcesses = audioManager.getAllProcesses()
+    for pid in allProcesses:
+        print(audioManager.getVolume(pid))
+        audioManager.setVolume(pid, 0.5)
 
 # AUDIO:
 # https://github.com/AndreMiras/pycaw
