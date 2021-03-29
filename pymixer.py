@@ -7,7 +7,7 @@ import os
 class IconManager:
     cwd = pathlib.Path(__file__).parent.absolute()
     def __init__(self):
-        self.iconsDirPath = pathlib.Path(self.cwd / "static/")
+        self.iconsDirPath = pathlib.Path(self.cwd / 'static/')
         self.iconsAvailable = {}
         self.checkDir()
     
@@ -19,7 +19,7 @@ class IconManager:
         else:
             _, _, iconNames = next(os.walk(self.iconsDirPath))
             for iconName in iconNames:
-                processName = str(pathlib.Path(iconName).with_suffix(""))
+                processName = str(pathlib.Path(iconName).with_suffix(''))
                 self.iconsAvailable[processName] = iconName
     
     ### Extracts and returns a path to an icon. 
@@ -28,12 +28,12 @@ class IconManager:
     def getIcon(self, processName, filepath):
         if not processName in self.iconsAvailable:
             try:
-                iconName = processName + ".ico"
+                iconName = processName + '.ico'
                 iconPath = self.getIconPath(iconName)
                 IconExtractor(filepath).export_icon(iconPath)
                 self.iconsAvailable[processName] = iconName
             except NoIconsAvailableError:
-                print("No icon for", processName)
+                print('No icon for', processName)
                 return None
         return self.iconsAvailable[processName]
 
@@ -65,10 +65,10 @@ class AudioManager:
         if session:
             process = session.Process
             if process:
-                return {"pid": pid,
-                        "name": process.name(), 
-                        "filepath": process.exe(),
-                        "volume": self.getVolume(pid)}
+                return {'pid': pid,
+                        'name': process.name(), 
+                        'filepath': process.exe(),
+                        'volume': self.getVolume(pid)}
 
     def getAllProcessInfo(self):
         allProcessesInfo = []
