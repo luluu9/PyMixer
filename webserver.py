@@ -12,19 +12,26 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, logger=True) # engineio_logger=True
 
 def getProcessVolumes():
-    processVolumes = {process[0]:process[2] for process in audioManager.getAllProcessInfo()}
+    processVolumes = {process["pid"]:process["volume"] for process in audioManager.getAllProcessInfo()}
     return processVolumes
 
 def getProcessIcons():
-    processIcons = {process[0]:iconManager.getIcon(process[0], process[1]) for process in audioManager.getAllProcessInfo()}
+    processIcons = {process["pid"]:iconManager.getIcon(process["name"], process["filepath"]) for process in audioManager.getAllProcessInfo()}
     return processIcons
+
+def getBaseInfo():
+    baseInfo = audioManager.getAllProcessInfo()
+    for i in range(len(baseInfo)):
+        process = baseInfo[i]
+        baseInfo[i]["icon"] = iconManager.getIcon(process["name"], process["filepath"])
+    return baseInfo
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def index(path):
-    processVolumes = getProcessVolumes()
-    processIcons = getProcessIcons() 
-    return render_template("pymixer.html", processVolumes=processVolumes, processIcons=processIcons)
+    baseInfo = getBaseInfo()
+    return render_template("pymixer.html", baseInfo=baseInfo)
 
 @socketio.on("connected")
 def connected(data):
@@ -40,7 +47,7 @@ def handle_update(data=None):
         print(data)
         # update volume
         pass
-    processVolumes = {process[0]:process[2] for process in audioManager.getAllProcessInfo()}
+    processVolumes = {process["pid"]:process["volume"] for process in audioManager.getAllProcessInfo()}
     socketio.emit("update", processVolumes)
 
 

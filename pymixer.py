@@ -65,7 +65,10 @@ class AudioManager:
         if session:
             process = session.Process
             if process:
-                return [process.name(), process.exe(), self.getVolume(pid)]
+                return {"pid": pid,
+                        "name": process.name(), 
+                        "filepath": process.exe(),
+                        "volume": self.getVolume(pid)}
 
     def getAllProcessInfo(self):
         allProcessesInfo = []
