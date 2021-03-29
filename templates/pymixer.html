@@ -6,12 +6,29 @@
         var socket = io();
         socket.on('connect', function() {
             socket.emit('connected', {data: 'I\'m connected!'});
+            socket.emit('update')
         });
+        socket.on('update', data => {
+            if (data) {
+                console.log(data)
+                for (let [processName, volume] of Object.entries(data)) {
+                    document.getElementById(processName+'_volume').innerHTML = volume
+                }
+                console.log("Got update")
+            }
+            setTimeout(function(){ socket.emit('update'); }, 1000); 
+        });
+        
+
     </script>
 </head>
 <body>
     {% for processName, volume in processVolumes.items() %}
-        <div class="process"> <img src={{ url_for("static", filename=processIcons[processName]|e )}} style="height: 50px"> {{ processName|e }}: {{ volume|e }}</div>
+        <div class="process" id={{ processName|e }}> 
+            <img src={{ url_for("static", filename=processIcons[processName]|e )}} style="height: 50px"> 
+            {{ processName|e }}: 
+            <span id={{ processName|e }}_volume> {{ volume|e }} </span>
+        </div>
     {% endfor %}
 </body>
 
