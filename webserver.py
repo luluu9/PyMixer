@@ -2,6 +2,7 @@ from flask import Flask
 from flask import render_template, url_for
 from flask_socketio import SocketIO, emit
 from pymixer import IconManager, AudioManager
+from json import loads
 
 host, port = "127.0.0.1", 5000
 
@@ -44,9 +45,9 @@ def handle_message(data):
 @socketio.on('update')
 def handle_update(data=None):
     if data:
-        print(data)
-        # update volume
-        pass
+        values = loads(data)
+        for pid, volume in values.items():
+            audioManager.setVolume(int(pid), int(volume)/100.0)
     processVolumes = {process["pid"]:process["volume"] for process in audioManager.getAllProcessInfo()}
     socketio.emit("update", processVolumes)
 

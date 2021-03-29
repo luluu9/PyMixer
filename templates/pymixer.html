@@ -23,8 +23,8 @@
 
         function changeVolume(processName, volume) {
             console.log('Demanded a volume change on process ' + processName + ' to value ' + volume);
-            var x = {[processName]: volume}
-            socket.emit('update', x)
+            var volumeChange = {[processName]: volume}
+            socket.emit('update', JSON.stringify(volumeChange))
         }
 
         document.addEventListener('DOMContentLoaded', function(event) { 
