@@ -37,8 +37,9 @@ def handle_message(data):
 @socketio.on('update')
 def handle_update(data=None):
     if data:
-        pass
+        print(data)
         # update volume
+        pass
     processVolumes = {process[0]:process[2] for process in audioManager.getAllProcessInfo()}
     socketio.emit("update", processVolumes)
 

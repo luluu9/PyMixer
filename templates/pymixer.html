@@ -1,33 +1,43 @@
 <!doctype html>
 <head>
     <title>PyMixer</title>
-    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf-8">
+    <script src='https://cdn.socket.io/3.1.3/socket.io.min.js' integrity='sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh' crossorigin='anonymous'></script>
+    <script type='text/javascript' charset='utf-8'>
         var socket = io();
-        socket.on('connect', function() {
-            socket.emit('connected', {data: 'I\'m connected!'});
-            socket.emit('update')
-        });
-        socket.on('update', data => {
-            if (data) {
-                console.log(data)
-                for (let [processName, volume] of Object.entries(data)) {
-                    document.getElementById(processName+'_volume').innerHTML = volume
-                }
-                console.log("Got update")
-            }
-            setTimeout(function(){ socket.emit('update'); }, 1000); 
-        });
-        
+        function start() {
+            socket.on('connect', function() {
+                socket.emit('connected', {data: 'I\'m connected!'});
+                socket.emit('update')
+            });
 
+            socket.on('update', data => {
+                if (data) {
+                    for (let [processName, volume] of Object.entries(data)) {
+                        document.getElementById(processName+'Volume').value = volume*100;
+                    }
+                    console.log('Got update');
+                }
+            });
+            setInterval(function(){ socket.emit('update'); }, 1000); 
+        }
+
+        function changeVolume(processName, volume) {
+            console.log('Demanded a volume change on process ' + processName + ' to value ' + volume);
+            var x = {[processName]: volume}
+            socket.emit('update', x)
+        }
+
+        document.addEventListener('DOMContentLoaded', function(event) { 
+            start();
+        });
     </script>
 </head>
 <body>
     {% for processName, volume in processVolumes.items() %}
-        <div class="process" id={{ processName|e }}> 
-            <img src={{ url_for("static", filename=processIcons[processName]|e )}} style="height: 50px"> 
+        <div class='process' id={{ processName|e }}> 
+            <img src={{ url_for('static', filename=processIcons[processName]|e )}} style='height: 50px'> 
             {{ processName|e }}: 
-            <span id={{ processName|e }}_volume> {{ volume|e }} </span>
+            <input type='range' min='0' max='100' value='{{ volume }}' class='volumeSlider' id='{{ processName|e }}Volume' onChange='changeVolume(this.parentNode.id, this.value)'>
         </div>
     {% endfor %}
 </body>
