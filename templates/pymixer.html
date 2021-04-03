@@ -31,14 +31,31 @@
             start();
         });
     </script>
+
+    <style>
+        div img {
+            height: 50px;
+        }
+
+        div.process {
+            height: 50px;
+            line-height: 50px;
+            display: grid;
+            grid-template-columns: 60px 100px 200px;
+            grid-template-rows: auto;
+        }
+    </style>
+    
 </head>
 <body>
+    <div id='processList'>
     {% for process in baseInfo: %}
         <div class='process' id={{ process['pid']|e }}> 
-            <img src={{ url_for('static', filename=process['icon']|e )}} style='height: 50px'> 
-            {{ process['name']|e }}: 
+            <img src={{ url_for('static', filename=process['icon']|e )}}> 
+            <span>{{ process['name']|e }}:</span> 
             <input type='range' min='0' max='100' value='{{ process['volume'] }}' class='volumeSlider' id='{{ process['pid']|e }}Volume' onInput='changeVolume(this.parentNode.id, this.value)'>
         </div>
     {% endfor %}
+    </div>
 </body>
 
