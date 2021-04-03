@@ -37,7 +37,7 @@
         <div class='process' id={{ process['pid']|e }}> 
             <img src={{ url_for('static', filename=process['icon']|e )}} style='height: 50px'> 
             {{ process['name']|e }}: 
-            <input type='range' min='0' max='100' value='{{ process['volume'] }}' class='volumeSlider' id='{{ process['pid']|e }}Volume' onChange='changeVolume(this.parentNode.id, this.value)'>
+            <input type='range' min='0' max='100' value='{{ process['volume'] }}' class='volumeSlider' id='{{ process['pid']|e }}Volume' onInput='changeVolume(this.parentNode.id, this.value)'>
         </div>
     {% endfor %}
 </body>
