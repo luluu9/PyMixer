@@ -1,4 +1,4 @@
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+from pycaw.pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from time import sleep
 from icoextract import IconExtractor, NoIconsAvailableError
 import pathlib
